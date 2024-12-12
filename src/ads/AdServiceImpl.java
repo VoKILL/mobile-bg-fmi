@@ -3,7 +3,7 @@ package ads;
 import java.util.ArrayList;
 import java.util.List;
 import search.Filter;
-import notification.NotificationService;
+import notifications.NotificationService;
 
 public class AdServiceImpl implements AdService {
     private List<Ad> ads = new ArrayList<>();

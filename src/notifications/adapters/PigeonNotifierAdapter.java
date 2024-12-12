@@ -1,7 +1,7 @@
-package notification;
+package notifications.adapters;
 
 import ads.Ad;
-import notifications.PigeonNotifier;
+import notifications.external.PigeonNotifier;
 
 public class PigeonNotifierAdapter implements Notifier {
     private final PigeonNotifier pigeonNotifier;

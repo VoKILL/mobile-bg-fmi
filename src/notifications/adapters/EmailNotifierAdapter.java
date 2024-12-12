@@ -1,7 +1,7 @@
-package notification;
+package notifications.adapters;
 
 import ads.Ad;
-import notifications.EmailNotifier;
+import notifications.external.EmailNotifier;
 
 public class EmailNotifierAdapter implements Notifier {
     private final EmailNotifier emailNotifier;

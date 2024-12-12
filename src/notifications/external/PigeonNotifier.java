@@ -1,4 +1,4 @@
-package notifications;
+package notifications.external;
 
 public class PigeonNotifier {
     public void sendPigeon(String address, Integer pigeonNumber, String message) {

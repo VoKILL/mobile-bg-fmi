@@ -1,4 +1,4 @@
-package notifications;
+package notifications.external;
 
 public class EmailNotifier {
     public void sendEmail(String email, String title, String message) {

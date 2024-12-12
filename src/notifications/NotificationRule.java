@@ -1,6 +1,7 @@
-package notification;
+package notifications;
 
 import ads.Ad;
+import notifications.adapters.Notifier;
 import search.Filter;
 
 public class NotificationRule {

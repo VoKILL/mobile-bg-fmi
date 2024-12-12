@@ -1,4 +1,4 @@
-package notifications;
+package notifications.external;
 
 public class SmsNotifier {
     public void sendSms(String phoneNumber, String message) {

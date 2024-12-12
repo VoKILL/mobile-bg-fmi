@@ -1,7 +1,7 @@
-package notification;
+package notifications.adapters;
 
 import ads.Ad;
-import notifications.SmsNotifier;
+import notifications.external.SmsNotifier;
 
 public class SmsNotifierAdapter implements Notifier {
     private final SmsNotifier smsNotifier;
