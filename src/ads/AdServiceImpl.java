@@ -3,9 +3,16 @@ package ads;
 import java.util.ArrayList;
 import java.util.List;
 import search.Filter;
+import notification.NotificationService;
 
 public class AdServiceImpl implements AdService {
     private List<Ad> ads = new ArrayList<>();
+
+    private NotificationService notificationService;
+
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
 
     @Override
     public Ad createAd(Ad ad) {
@@ -13,14 +20,19 @@ public class AdServiceImpl implements AdService {
             ad.setId(generateId());
         }
         ads.add(ad);
+
+        if (notificationService != null) {
+            notificationService.notifyAll(ad);
+        }
+
         return ad;
     }
 
     @Override
     public Ad getAdById(Long id) {
-        for (Ad ad : ads) {
-            if (ad.getId().equals(id)) {
-                return ad;
+        for (Ad a : ads) {
+            if (a.getId().equals(id)) {
+                return a;
             }
         }
         return null;
