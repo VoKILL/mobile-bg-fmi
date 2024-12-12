@@ -9,7 +9,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
-        setProductId(product, generateId());
+        if (product.getId() == null && product instanceof Vehicle) {
+            ((Vehicle) product).setId(generateId());
+        }
         products.add(product);
         return product;
     }
@@ -17,8 +19,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Long id) {
         for (Product p : products) {
-            Long pId = getProductId(p);
-            if (pId.equals(id)) {
+            if (p.getId().equals(id)) {
                 return p;
             }
         }
@@ -33,9 +34,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product updateProduct(Long id, Product updatedProduct) {
         for (int i = 0; i < products.size(); i++) {
-            Long pId = getProductId(products.get(i));
-            if (pId.equals(id)) {
-                setProductId(updatedProduct, id);
+            Product current = products.get(i);
+            if (current.getId().equals(id)) {
+                if (updatedProduct instanceof Vehicle) {
+                    ((Vehicle) updatedProduct).setId(id);
+                }
                 products.set(i, updatedProduct);
                 return updatedProduct;
             }
@@ -45,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean deleteProduct(Long id) {
-        return products.removeIf(p -> getProductId(p).equals(id));
+        return products.removeIf(p -> p.getId().equals(id));
     }
 
     @Override
@@ -62,28 +65,11 @@ public class ProductServiceImpl implements ProductService {
     private Long generateId() {
         long maxId = 0;
         for (Product p : products) {
-            Long pId = getProductId(p);
-            if (pId > maxId) {
+            Long pId = p.getId();
+            if (pId != null && pId > maxId) {
                 maxId = pId;
             }
         }
         return maxId + 1;
-    }
-
-    private Long getProductId(Product product) {
-        if (product instanceof Car) {
-            return ((Car)product).getId();
-        } else if (product instanceof Truck) {
-            return ((Truck)product).getId();
-        }
-        return null;
-    }
-
-    private void setProductId(Product product, Long id) {
-        if (product instanceof Car) {
-            ((Car)product).setId(id);
-        } else if (product instanceof Truck) {
-            ((Truck)product).setId(id);
-        }
     }
 }

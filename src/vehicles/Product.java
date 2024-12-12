@@ -5,4 +5,5 @@ public interface Product {
     String getBrand();
     int getYear();
     double getRange();
+    Long getId();
 }
