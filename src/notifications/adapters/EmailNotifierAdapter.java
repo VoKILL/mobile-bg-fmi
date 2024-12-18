@@ -15,9 +15,7 @@ public class EmailNotifierAdapter implements Notifier {
     }
 
     @Override
-    public void notify(Ad ad) {
-        // Например: изпращаме имейл със заглавие и информация за обявата
-        String message = "New ad matched your criteria: " + ad;
+    public void notify(String message) {
         emailNotifier.sendEmail(email, title, message);
     }
 }

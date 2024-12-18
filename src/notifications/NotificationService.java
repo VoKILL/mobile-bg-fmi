@@ -14,7 +14,8 @@ public class NotificationService {
     public void notifyAll(Ad ad) {
         for (NotificationRule rule : rules) {
             if (rule.matches(ad)) {
-                rule.notify(ad);
+                String message = "New ad matched your criteria: " + ad;
+                rule.notify(message);
             }
         }
     }

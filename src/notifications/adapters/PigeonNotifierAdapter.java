@@ -15,8 +15,7 @@ public class PigeonNotifierAdapter implements Notifier {
     }
 
     @Override
-    public void notify(Ad ad) {
-        String message = "New ad matched your criteria: " + ad;
+    public void notify(String message) {
         pigeonNotifier.sendPigeon(address, pigeonNumber, message);
     }
 }

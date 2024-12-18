@@ -3,5 +3,5 @@ package notifications.adapters;
 import ads.Ad;
 
 public interface Notifier {
-    void notify(Ad ad);
+    void notify(String message);
 }

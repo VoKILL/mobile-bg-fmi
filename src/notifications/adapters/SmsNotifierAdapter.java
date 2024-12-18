@@ -13,8 +13,7 @@ public class SmsNotifierAdapter implements Notifier {
     }
 
     @Override
-    public void notify(Ad ad) {
-        String message = "New ad matched your criteria: " + ad;
+    public void notify(String message) {
         smsNotifier.sendSms(phoneNumber, message);
     }
 }

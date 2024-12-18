@@ -17,7 +17,7 @@ public class NotificationRule {
         return filter.matches(ad);
     }
 
-    public void notify(Ad ad) {
-        notifier.notify(ad);
+    public void notify(String message) {
+        notifier.notify(message);
     }
 }
