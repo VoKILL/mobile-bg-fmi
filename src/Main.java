@@ -306,7 +306,7 @@ public class Main {
                 System.out.println("Невалиден номер. Пропускане на този филтър.");
             }
         }
-        if (selectedFilters.isEmpty()) {
+        if (selectedFilters.isEmpty() || selectedFilters.size() < count) {
             System.out.println("Не са избрани валидни филтри. Отказ.");
             return;
         }
