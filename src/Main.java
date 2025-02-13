@@ -1,5 +1,6 @@
 import ads.*;
 import notifications.*;
+import notifications.adapters.*;
 import search.*;
 import vehicles.*;
 
@@ -90,7 +91,8 @@ public class Main {
             System.out.println("2. Създаване на нова обява");
             System.out.println("3. Създаване на нов филтър");
             System.out.println("4. Прилагане на филтър върху обявите");
-            System.out.println("5. Изход");
+            System.out.println("5. Създаване на правило за нотификации");
+            System.out.println("6. Изход");
             int mainChoice = readInt(scanner, "Вашият избор: ");
 
             switch (mainChoice) {
@@ -107,6 +109,9 @@ public class Main {
                     applyFilter(adService, userFilters, scanner);
                     break;
                 case 5:
+                    createNotificationRule(notificationService, userFilters, scanner);
+                    break;
+                case 6:
                     exit = true;
                     System.out.println("Изход от програмата.");
                     break;
@@ -116,6 +121,60 @@ public class Main {
             }
         }
         scanner.close();
+    }
+
+    // Метод за създаване на правило за нотификации (интерактивно)
+    private static void createNotificationRule(NotificationService notificationService, List<FilterOption> userFilters, Scanner scanner) {
+        System.out.println("\n=== Създаване на правило за нотификации ===");
+        if (userFilters.isEmpty()) {
+            System.out.println("Няма създадени филтри. Моля първо създайте филтър, който ще използвате за правило за нотификации.");
+            return;
+        }
+
+        // Избор на тип нотификатор
+        System.out.println("Изберете тип нотификатор:");
+        System.out.println("1. SMS нотификатор");
+        System.out.println("2. Email нотификатор");
+        System.out.println("3. Pigeon нотификатор");
+        int notifierType = readInt(scanner, "Вашият избор: ");
+
+        Notifier notifier = null;
+        switch (notifierType) {
+            case 1:
+                String phone = readNonEmptyString(scanner, "Въведете телефонен номер: ");
+                notifier = new SmsNotifierAdapter(phone);
+                break;
+            case 2:
+                String email = readNonEmptyString(scanner, "Въведете email адрес: ");
+                String title = readNonEmptyString(scanner, "Въведете title: ");
+                notifier = new EmailNotifierAdapter(email, title);
+                break;
+            case 3:
+                String address = readNonEmptyString(scanner, "Въведете адрес: ");
+                int number = readInt(scanner, "Въведете номер на Pigeon: ");
+                notifier = new PigeonNotifierAdapter(address, number);
+                break;
+            default:
+                System.out.println("Невалиден избор за тип нотификатор.");
+                return;
+        }
+
+        // Избор на филтър, който ще свързва правилото
+        System.out.println("Изберете филтър, който ще служи като условие за нотификация:");
+        for (int i = 0; i < userFilters.size(); i++) {
+            System.out.println((i + 1) + ". " + userFilters.get(i).description);
+        }
+        int filterIndex = readInt(scanner, "Вашият избор: ") - 1;
+        if (filterIndex < 0 || filterIndex >= userFilters.size()) {
+            System.out.println("Невалиден избор на филтър.");
+            return;
+        }
+
+        // Създаваме правилото за нотификации и го добавяме в NotificationService
+        NotificationRule rule = new NotificationRule(userFilters.get(filterIndex).filter, notifier);
+        notificationService.addRule(rule);
+        System.out.println("Правилото за нотификации беше успешно създадено с филтър: "
+                + userFilters.get(filterIndex).description);
     }
 
     // Помощни методи за въвеждане с ерор хендлинг
@@ -201,7 +260,7 @@ public class Main {
         }
 
         Product product = null;
-        // Въведете името (аналог на модел)
+        // Въведете име (аналог на модел)
         String name = readNonEmptyString(scanner, "Въведете модел: ");
         String brand = readNonEmptyString(scanner, "Въведете марка: ");
         int year = readInt(scanner, "Въведете година: ");
@@ -389,7 +448,7 @@ public class Main {
         } else if (product instanceof Truck) {
             type = "Камион";
         }
-        // Извеждаме: номер, марка, име, година, цена и обхват
+        // Извеждаме: номер, марка, модел (name), година, цена и пробег (range)
         System.out.printf("%d. %s %s (%d) - Цена: %.2f, Пробег: %.2f\n",
                 index,
                 product.getBrand(),
